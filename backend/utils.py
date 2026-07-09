@@ -11,6 +11,11 @@ def fetch_metadata(url):
         'skip_download': True,
         'no_warnings': True,
         'format': 'bestaudio/best',
+        'extractor_args': {
+            'youtube': {
+                'player_client': ['ios', 'android']
+            }
+        }
     }
     
     try:
@@ -42,6 +47,11 @@ def process_audio(url, start_time, end_time, output_dir):
         'outtmpl': base_filepath,
         'quiet': True,
         'no_warnings': True,
+        'extractor_args': {
+            'youtube': {
+                'player_client': ['ios', 'android']
+            }
+        },
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'mp3',
