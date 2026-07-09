@@ -1,0 +1,65 @@
+/* Custom Animations */
+@keyframes shimmer {
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes progressStripes {
+    0% {
+        background-position: 1rem 0;
+    }
+    100% {
+        background-position: 0 0;
+    }
+}
+
+/* Base Styles */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Custom Dual Range Slider Styling */
+.slider-thumb::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background-color: #8b5cf6; /* brand-500 */
+    border: 3px solid #0f111a; /* dark-900 */
+    border-radius: 50%;
+    cursor: pointer;
+    pointer-events: auto;
+    box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+    transition: transform 0.1s;
+}
+
+.slider-thumb::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background-color: #8b5cf6;
+    border: 3px solid #0f111a;
+    border-radius: 50%;
+    cursor: pointer;
+    pointer-events: auto;
+    box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+    transition: transform 0.1s;
+}
+
+.slider-thumb:hover::-webkit-slider-thumb {
+    transform: scale(1.2);
+}
+
+.slider-thumb:hover::-moz-range-thumb {
+    transform: scale(1.2);
+}
+
+.slider-thumb:active::-webkit-slider-thumb {
+    transform: scale(1.1);
+}
+
+.slider-thumb:active::-moz-range-thumb {
+    transform: scale(1.1);
+}
