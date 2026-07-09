@@ -5,8 +5,12 @@ from utils import fetch_metadata, process_audio
 import urllib.parse
 import re
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='../frontend', static_url_path='')
 CORS(app) # Allow frontend to communicate with backend
+
+@app.route('/')
+def index():
+    return send_file(os.path.join(app.static_folder, 'index.html'))
 
 # Ensure temp directory exists
 TEMP_DIR = os.path.join(os.path.dirname(os.path.abspath(__name__)), 'temp')
@@ -87,4 +91,5 @@ def convert():
         return jsonify({'error': result.get('error', 'Processing failed')}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)

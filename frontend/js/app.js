@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
         convertBtn.classList.remove('hidden');
 
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/fetch-info', {
+            const response = await fetch('/api/fetch-info', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ url: url })
@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
         processLoader.classList.remove('hidden');
 
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/convert', {
+            const response = await fetch('/api/convert', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
