@@ -2,21 +2,39 @@ import os
 import uuid
 import yt_dlp
 
-def fetch_metadata(url):
-    """
-    Fetches video metadata (title, thumbnail, duration) without downloading the video.
-    """
-    ydl_opts = {
+COOKIES_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'cookies.txt')
+
+def _setup_cookies():
+    """Write YouTube cookies from environment variable to a file (runs once at import)."""
+    cookies_data = os.environ.get('YOUTUBE_COOKIES', '')
+    if cookies_data:
+        with open(COOKIES_FILE, 'w') as f:
+            f.write(cookies_data)
+
+_setup_cookies()
+
+def _get_base_opts():
+    """Return yt-dlp options with cookies if available."""
+    opts = {
         'quiet': True,
-        'skip_download': True,
         'no_warnings': True,
-        'format': 'bestaudio/best',
         'extractor_args': {
             'youtube': {
                 'player_client': ['ios', 'android']
             }
         }
     }
+    if os.path.exists(COOKIES_FILE) and os.path.getsize(COOKIES_FILE) > 0:
+        opts['cookiefile'] = COOKIES_FILE
+    return opts
+
+def fetch_metadata(url):
+    """
+    Fetches video metadata (title, thumbnail, duration) without downloading the video.
+    """
+    ydl_opts = _get_base_opts()
+    ydl_opts['skip_download'] = True
+    ydl_opts['format'] = 'bestaudio/best'
     
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -42,16 +60,10 @@ def process_audio(url, start_time, end_time, output_dir):
     file_id = str(uuid.uuid4())
     base_filepath = os.path.join(output_dir, file_id)
     
-    ydl_opts = {
+    ydl_opts = _get_base_opts()
+    ydl_opts.update({
         'format': 'bestaudio/best',
         'outtmpl': base_filepath,
-        'quiet': True,
-        'no_warnings': True,
-        'extractor_args': {
-            'youtube': {
-                'player_client': ['ios', 'android']
-            }
-        },
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'mp3',
@@ -62,7 +74,7 @@ def process_audio(url, start_time, end_time, output_dir):
             '-ss', str(start_time),
             '-to', str(end_time)
         ]
-    }
+    })
     
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:

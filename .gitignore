@@ -33,6 +33,7 @@ venv.bak/
 # Project specific
 backend/temp/
 *.mp3
+cookies.txt
 
 # OS generated files
 .DS_Store
