@@ -2,6 +2,7 @@ import os
 import uuid
 import yt_dlp
 import base64
+import string
 
 COOKIES_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'cookies.txt')
 
@@ -21,7 +22,8 @@ def _setup_cookies():
         print(f"Pipe-separated cookies ({len(content)} bytes)", flush=True)
     else:
         try:
-            content = base64.b64decode(cookies_data).decode('utf-8')
+            clean = ''.join(c for c in cookies_data if c in string.ascii_letters + string.digits + '+/=')
+            content = base64.b64decode(clean).decode('utf-8')
             print(f"Base64 decoded ({len(content)} bytes)", flush=True)
         except Exception as e:
             print(f"Decode failed ({e}), using raw ({len(cookies_data)} bytes)", flush=True)
